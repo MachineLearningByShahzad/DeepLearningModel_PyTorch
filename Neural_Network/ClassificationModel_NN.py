@@ -13,14 +13,17 @@ print(titanic_data.head())
 
 # Trimming unwanted data
 unwanted_features = ['PassengerId', 'Name', 'Ticket', 'Cabin', 'SibSp', 'Parch', 'Embarked']
+# Axis = 1 is dropping columns, and Axis = 0 is dropping rows
 titanic_data = titanic_data.drop(unwanted_features, axis=1)
 print(titanic_data.head())
 
 # Removing nulls
 titanic_data = titanic_data.dropna()
 
-# Preporocessing
+# Preprocessing
 le = preprocessing.LabelEncoder()
+
+# Lebel encoder encodes the string values into number for sex => male = 1 and female = 0
 titanic_data['Sex'] = le.fit_transform(titanic_data['Sex'])
 print(titanic_data.head())
 
@@ -41,7 +44,7 @@ X_train, x_test, Y_train, y_test = train_test_split(titanic_features, titanic_ta
 print(X_train.shape, Y_train.shape)
 
 import torch
-
+# Converting Numpy Array into Tensors
 Xtrain_ = torch.from_numpy(X_train.values.astype('float32'))
 Xtest_ = torch.from_numpy(x_test.values.astype('float32'))
 
@@ -64,20 +67,6 @@ hidden_size = 10
 
 class Net(nn.Module):
 
-    # def __int__(self):
-    #     # This allows us to initialize the NN before initializing layers
-    #     super(Net, self).__init__()
-    #     # Instantiating 3 Linear, fully-connected layers
-    #     self.fc1 = nn.Linear(6, 10)
-    #     self.fc2 = nn.Linear(10, 10)
-    #     self.fc3 = nn.Linear(10, 2)
-
-    # def forward(self, x):
-    #     x = F.sigmoid(self.fc1(x))
-    #     x = F.sigmoid(self.fc2(x))
-    #     x = self.fc3(x)
-    #
-    #     return F.log_softmax(x, dim=-1)
     def log_softmax(self, x):
         return torch.log(torch.softmax(x, dim=-1))
 
@@ -140,4 +129,3 @@ df_epochs_data[['train_loss', 'test_loss']].plot(ax=ax1)
 df_epochs_data[['accuracy']].plot(ax=ax2)
 plt.ylim(ymin=0.5)
 plt.show()
-

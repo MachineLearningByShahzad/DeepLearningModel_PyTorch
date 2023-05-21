@@ -6,10 +6,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-
-
 if __name__ == '__main__':
     import multiprocessing
+
     multiprocessing.freeze_support()
 
     trainset = torchvision.datasets.CIFAR10(root='./CNN/datasets',
@@ -41,7 +40,7 @@ if __name__ == '__main__':
 
     # images_batch, labels_batch = iter(trainloader).next()
     # for images_batch, labels_batch in trainloader:
-        # Process the batch of data
+    # Process the batch of data
     data_iter = iter(trainloader)
     images_batch, labels_batch = next(data_iter)
 
@@ -50,18 +49,19 @@ if __name__ == '__main__':
     img = torchvision.utils.make_grid(images_batch)
     print(img.shape)
 
-    print(np.transpose(img, (1,2,0)).shape)
+    print(np.transpose(img, (1, 2, 0)).shape)
 
-    plt.imshow(np.transpose(img, (1,2,0)))
+    plt.imshow(np.transpose(img, (1, 2, 0)))
     plt.axis('off')
     plt.show()
 
-    #NN Const
+    # NN Const
     in_size = 3
     hid1_size = 16
     hid2_size = 32
     out_size = len(labels)
     k_conv_size = 5
+
 
     class ConvNet(nn.Module):
         def __init__(self, in_size, hid1_size, hid2_size, k_conv_size, out_size):
@@ -89,6 +89,7 @@ if __name__ == '__main__':
             out = self.fc(out)
             return out
 
+
     model = ConvNet(in_size, hid1_size, hid2_size, k_conv_size, out_size)
     learning_rate = 0.001
     criterion = nn.CrossEntropyLoss()
@@ -108,7 +109,8 @@ if __name__ == '__main__':
             optimizer.step()
 
             if (i + 1) % 2000 == 0:
-                print('Epoch [{}/{}], Steps [{}/{}], Loss: {:.4f}'.format(epoch+1, num_epochs, i+1, i, total_step, loss.item()))
+                print('Epoch [{}/{}], Steps [{}/{}], Loss: {:.4f}'.format(epoch + 1, num_epochs, i + 1, i, total_step,
+                                                                          loss.item()))
 
     # Evaluating the Model
     model.eval()
@@ -121,5 +123,5 @@ if __name__ == '__main__':
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-        print('Accuracy of the model on the 10000 test images: {}%'\
+        print('Accuracy of the model on the 10000 test images: {}%' \
               .format(100 * correct / total))
