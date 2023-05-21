@@ -35,3 +35,4 @@ print(all_letters)
 # Converting Name to Tensors
 def name_to_tensor(name):
     name_in_tensor = torch.zeros(len(name), 1, n_letters)
+
